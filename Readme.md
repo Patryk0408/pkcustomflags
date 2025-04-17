@@ -1,0 +1,1 @@
+# Show flags on product
