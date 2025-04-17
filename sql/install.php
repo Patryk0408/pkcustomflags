@@ -25,9 +25,9 @@
 */
 $sql = array();
 
-$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'pk_customflags` (
-    `id_pk_customflags` int(11) NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY  (`id_pk_customflags`)
+$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'pkcustomflags` (
+    `id_pkcustomflags` int(11) NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY  (`id_pkcustomflags`)
 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 
 foreach ($sql as $query) {

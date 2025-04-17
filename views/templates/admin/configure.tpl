@@ -24,25 +24,25 @@
 *}
 
 <div class="panel">
-	<h3><i class="icon icon-credit-card"></i> {l s='Show flags on product' mod='pk_customflags'}</h3>
+	<h3><i class="icon icon-credit-card"></i> {l s='Show flags on product' mod='pkcustomflags'}</h3>
 	<p>
-		<strong>{l s='Here is my new generic module!' mod='pk_customflags'}</strong><br />
-		{l s='Thanks to PrestaShop, now I have a great module.' mod='pk_customflags'}<br />
-		{l s='I can configure it using the following configuration form.' mod='pk_customflags'}
+		<strong>{l s='Here is my new generic module!' mod='pkcustomflags'}</strong><br />
+		{l s='Thanks to PrestaShop, now I have a great module.' mod='pkcustomflags'}<br />
+		{l s='I can configure it using the following configuration form.' mod='pkcustomflags'}
 	</p>
 	<br />
 	<p>
-		{l s='This module will boost your sales!' mod='pk_customflags'}
+		{l s='This module will boost your sales!' mod='pkcustomflags'}
 	</p>
 </div>
 
 <div class="panel">
-	<h3><i class="icon icon-tags"></i> {l s='Documentation' mod='pk_customflags'}</h3>
+	<h3><i class="icon icon-tags"></i> {l s='Documentation' mod='pkcustomflags'}</h3>
 	<p>
-		&raquo; {l s='You can get a PDF documentation to configure this module' mod='pk_customflags'} :
+		&raquo; {l s='You can get a PDF documentation to configure this module' mod='pkcustomflags'} :
 		<ul>
-			<li><a href="#" target="_blank">{l s='English' mod='pk_customflags'}</a></li>
-			<li><a href="#" target="_blank">{l s='French' mod='pk_customflags'}</a></li>
+			<li><a href="#" target="_blank">{l s='English' mod='pkcustomflags'}</a></li>
+			<li><a href="#" target="_blank">{l s='French' mod='pkcustomflags'}</a></li>
 		</ul>
 	</p>
 </div>

@@ -28,13 +28,13 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class Pk_customflags extends Module
+class Pkcustomflags extends Module
 {
     protected $config_form = false;
 
     public function __construct()
     {
-        $this->name = 'pk_customflags';
+        $this->name = 'pkcustomflags';
         $this->tab = 'front_office_features';
         $this->version = '1.0.0';
         $this->author = 'Patryk Krawczyk';
@@ -81,7 +81,7 @@ class Pk_customflags extends Module
         /**
          * If values have been submitted in the form, process.
          */
-        if (((bool)Tools::isSubmit('submitPk_customflagsModule')) == true) {
+        if (((bool)Tools::isSubmit('submitPkcustomflagsModule')) == true) {
             $this->postProcess();
         }
 
