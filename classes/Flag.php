@@ -23,25 +23,36 @@
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
-$sql = array();
 
-$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'pk_custom_flags` (
-    `id_flag` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `name` varchar(255) NOT NULL,
-    `text` varchar(255) NOT NULL, 
-    `color` varchar(7) NOT NULL
-) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+class Flag extends ObjectModel {
+    public $id_flag;
+    public $name;
+    public $text;
+    public $color;
 
-$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'pk_custom_flag_conditions` (
-    `id_condition` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `id_flag` int(11) NOT NULL,
-    `condition_type` ENUM("category", "feature", "product") NOT NULL, 
-    `condition_value` INT NOT NULL,
-    FOREIGN KEY (`id_flag`) REFERENCES `' . _DB_PREFIX_ . 'pk_custom_flags`(`id_flag`) ON DELETE CASCADE
-) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
-
-foreach ($sql as $query) {
-    if (Db::getInstance()->execute($query) == false) {
-        return false;
-    }
+    public static $definition = [
+        'table' => 'pk_custom_flags',
+        'primary' => 'id_flag',
+        'multilang' => false,
+        'fields' => [
+            'name' => [
+                'type' => self::TYPE_STRING, 
+                'size' => 255, 
+                'validate' => 'isGenericName',
+                'required' => true
+            ],
+            'text' => [
+                'type' => self::TYPE_STRING, 
+                'size' => 255, 
+                'validate' => 'isCleanHtml',
+                'required' => true
+            ],
+            'color' => [
+                'type' => self::TYPE_STRING, 
+                'size' => 7, 
+                'validate' => 'isCleanHtml',
+                'required' => true
+            ],
+        ]
+    ];
 }

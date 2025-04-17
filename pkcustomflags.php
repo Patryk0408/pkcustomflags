@@ -30,7 +30,9 @@ if (!defined('_PS_VERSION_')) {
 
 class Pkcustomflags extends Module
 {
-    protected $config_form = false;
+    const ADMINCONTROLLERS = [
+        'adminConfigure' => 'AdminConfigurePkCustomFlags',
+    ];
 
     public function __construct()
     {
@@ -63,14 +65,16 @@ class Pkcustomflags extends Module
     {
         include(dirname(__FILE__).'/sql/install.php');
 
-        return parent::install();
+        return parent::install()
+            && $this->installTabs();
     }
 
     public function uninstall()
     {
         include(dirname(__FILE__).'/sql/uninstall.php');
 
-        return parent::uninstall();
+        return parent::uninstall()
+            && $this->uninstallTabs();
     }
 
     /**
@@ -78,17 +82,52 @@ class Pkcustomflags extends Module
      */
     public function getContent()
     {
-        /**
-         * If values have been submitted in the form, process.
-         */
-        if (((bool)Tools::isSubmit('submitPkcustomflagsModule')) == true) {
-            $this->postProcess();
+        $link = $this->context->link->getAdminLink('AdminConfigurePkCustomFlags');
+
+        Tools::redirectAdmin($link);
+        
+        return '';
+    }
+
+    /**
+     * @return bool
+     */
+    public function installTabs(): bool
+    {
+        $result = true;
+
+        foreach (static::ADMINCONTROLLERS as $controller_name) {
+            if (Tab::getIdFromClassName($controller_name)) {
+                continue;
+            }
+
+            $tab = new Tab();
+            $tab->class_name = $controller_name;
+            $tab->module = $this->name;
+            $tab->active = false;
+            $tab->id_parent = -1;
+            $tab->name = array_fill_keys(
+                Language::getIDs(false),
+                $this->displayName
+            );
+            $result = $result && (bool) $tab->add();
+        };
+
+        return $result;
+    }
+
+    /**
+     * @return bool
+     */
+    public function uninstallTabs(): bool
+    {
+        $result = true;
+
+        foreach (Tab::getCollectionFromModule($this->name) as $tab) {
+            /** @var Tab $tab */
+            $result = $result && (bool) $tab->delete();
         }
 
-        $this->context->smarty->assign('module_dir', $this->_path);
-
-        $output = $this->context->smarty->fetch($this->local_path.'views/templates/admin/configure.tpl');
-
-        return $output;
+        return $result;
     }
 }
