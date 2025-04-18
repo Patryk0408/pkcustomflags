@@ -53,6 +53,8 @@ class AdminConfigurePkCustomFlagsController extends ModuleAdminController
 
         $this->content .= $this->renderList();
 
+        $tpl_content = $this->context->smarty->fetch(_PS_MODULE_DIR_ . 'pkcustomflags/views/templates/admin/configure.tpl');
+        $this->content .= $tpl_content;
 
         $this->context->smarty->assign([
             'content' => $this->content,
@@ -65,9 +67,9 @@ class AdminConfigurePkCustomFlagsController extends ModuleAdminController
         if($id_flag = Tools::getValue('id_flag')) {
             $flag = new Flag($id_flag);
             $this->field_value = [
-                'flag_name' => $flag->name,
-                'flag_text' => $flag->text,
-                'flag_color' => $flag->color
+                'name' => $flag->name,
+                'text' => $flag->text,
+                'color' => $flag->color
             ];
         }
 
@@ -115,9 +117,9 @@ class AdminConfigurePkCustomFlagsController extends ModuleAdminController
     {
         if (Tools::isSubmit('submitAdd' . $this->table)) {
             $id_flag = Tools::getValue('id_flag');
-            $name = Tools::getValue('flag_name');
-            $text = Tools::getValue('flag_text');
-            $color = Tools::getValue('flag_color');
+            $name = Tools::getValue('name');
+            $text = Tools::getValue('text');
+            $color = Tools::getValue('color');
 
             if (empty($name) || empty($text) || empty($color)) {
                 $this->errors[] = $this->trans('All fields are required.', [], 'Modules.PkCustomFlags.Admin');

@@ -55,21 +55,23 @@ class Pkcustomflags extends Module
         $this->confirmUninstall = $this->l('');
 
         $this->ps_versions_compliancy = array('min' => '8.0', 'max' => _PS_VERSION_);
+        $this->registerHook('displayAfterProductThumbs');
     }
 
     /**
      * Don't forget to create update methods if needed:
      * http://doc.prestashop.com/display/PS16/Enabling+the+Auto-Update
      */
-    public function install()
+    public function install(): bool
     {
         include(dirname(__FILE__).'/sql/install.php');
 
         return parent::install()
-            && $this->installTabs();
+            && $this->installTabs()
+            && $this->registerHook('displayAfterProductThumbs');
     }
 
-    public function uninstall()
+    public function uninstall(): bool
     {
         include(dirname(__FILE__).'/sql/uninstall.php');
 
@@ -129,5 +131,10 @@ class Pkcustomflags extends Module
         }
 
         return $result;
+    }
+
+    public function hookDisplayAfterProductThumbs() 
+    {
+        
     }
 }
