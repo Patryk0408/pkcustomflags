@@ -24,19 +24,26 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
+use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
+
+require_once _PS_MODULE_DIR_ . 'pkcustomflags/classes/Flag.php';
+
 if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class Pkcustomflags extends Module
+class Pkcustomflags extends Module implements WidgetInterface
 {
     const ADMINCONTROLLERS = [
         'adminConfigure' => 'AdminConfigurePkCustomFlags',
     ];
 
+    private $widgetFile;
+
     public function __construct()
     {
         $this->name = 'pkcustomflags';
+        $this->widgetFile = 'module:pkcustomflags/views/templates/hook/flags.tpl';
         $this->tab = 'front_office_features';
         $this->version = '1.0.0';
         $this->author = 'Patryk Krawczyk';
@@ -49,13 +56,12 @@ class Pkcustomflags extends Module
 
         parent::__construct();
 
-        $this->displayName = $this->l('Show flags on product');
+        $this->displayName = $this->l('Custom flags');
         $this->description = $this->l('This module show custom flags on product');
 
         $this->confirmUninstall = $this->l('');
 
         $this->ps_versions_compliancy = array('min' => '8.0', 'max' => _PS_VERSION_);
-        $this->registerHook('displayAfterProductThumbs');
     }
 
     /**
@@ -68,7 +74,7 @@ class Pkcustomflags extends Module
 
         return parent::install()
             && $this->installTabs()
-            && $this->registerHook('displayAfterProductThumbs');
+            && $this->registerHook('displayCustomFlags');
     }
 
     public function uninstall(): bool
@@ -133,8 +139,22 @@ class Pkcustomflags extends Module
         return $result;
     }
 
-    public function hookDisplayAfterProductThumbs() 
+    public function renderWidget($hookName, array $params) {
+        if (!$this->isCached($this->widgetFile, $this->getCacheId($hookName))) {
+            $this->context->smarty->assign($this->getWidgetVariables($hookName, $params));
+        }
+        return $this->fetch($this->widgetFile);
+    }
+
+    public function getWidgetVariables($hookName, array $params) {
+        return [
+            'product' => $params['product'],
+            'flags' => Flag::getAllFlags(),
+        ];
+    }
+
+    public function hookDisplayCustomFlags(array $params) 
     {
-        
+        return $this->renderWidget('displayCustomFlags', $params);
     }
 }
