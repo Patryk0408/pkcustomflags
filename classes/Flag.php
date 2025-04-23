@@ -58,7 +58,9 @@ class Flag extends ObjectModel {
 
     public static function getAllFlags()
     {
-        $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'pk_custom_flags';
+        $sql = new DbQuery();
+        $sql->select('*');
+        $sql->from('pk_custom_flags');
         return Db::getInstance()->executeS($sql);
     }
 }
