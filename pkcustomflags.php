@@ -143,6 +143,19 @@ class Pkcustomflags extends Module implements WidgetInterface
         if (!$this->isCached($this->widgetFile, $this->getCacheId($hookName))) {
             $this->context->smarty->assign($this->getWidgetVariables($hookName, $params));
         }
+
+        // TODO: move to separate method
+        // $flags = new Flag();
+        // $flags->getAllFlags();
+
+        // dump($flags);
+
+        $this->context->controller->registerStylesheet(
+            'module-pkcustomflags-flag',
+            'modules/' . $this->name . '/views/css/flag.css',
+            ['media' => 'all', 'priority' => 150]
+        );
+
         return $this->fetch($this->widgetFile);
     }
 

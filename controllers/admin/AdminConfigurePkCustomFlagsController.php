@@ -33,7 +33,6 @@ class AdminConfigurePkCustomFlagsController extends ModuleAdminController
         $this->fields_list['id_flag']['title'] = $this->trans('ID', [], 'Modules.PkCustomFlags.Admin');
         $this->fields_list['name']['title'] = $this->trans('Name', [], 'Modules.PkCustomFlags.Admin');
         $this->fields_list['text']['title'] = $this->trans('Text', [], 'Modules.PkCustomFlags.Admin');
-        $this->fields_list['color']['title'] = $this->trans('Color', [], 'Modules.PkCustomFlags.Admin');
 
         parent::initContent();
     }
@@ -49,7 +48,6 @@ class AdminConfigurePkCustomFlagsController extends ModuleAdminController
 
         $this->addRowAction('edit');
         $this->addRowAction('delete');
-        $this->addRowAction('view');
 
         $this->content .= $this->renderList();
 
@@ -69,9 +67,12 @@ class AdminConfigurePkCustomFlagsController extends ModuleAdminController
             $this->field_value = [
                 'name' => $flag->name,
                 'text' => $flag->text,
-                'color' => $flag->color
+                'color' => $flag->color,
+                'categories' => $flag->categories
             ];
         }
+
+        $selected_categories = isset($this->field_value['categories']) ? explode(',', $this->field_value['categories']) : [];
 
         $this->fields_form = [
             'legend' => [
@@ -100,9 +101,20 @@ class AdminConfigurePkCustomFlagsController extends ModuleAdminController
                     'label' => 'Color',
                     'name' => 'color',
                     'class' => 'input',
-                    'required' => true,
+                    'required' => false,
                     'empty_message' => 'Please enter the color'
-                ]
+                ],
+                [
+                    'type' => 'categories',
+                    'label' => 'Wybierz kategorie',
+                    'name' => 'categories',
+                    'tree' => [
+                        'id' => 'customflag_category',
+                        'selected_categories' => $selected_categories,
+                        'root_category' => 2,
+                        'use_checkbox' => true,
+                    ],
+                ],
             ],
             'submit' => [
                     'title' => 'Save',
@@ -120,9 +132,12 @@ class AdminConfigurePkCustomFlagsController extends ModuleAdminController
             $name = Tools::getValue('name');
             $text = Tools::getValue('text');
             $color = Tools::getValue('color');
+            $categories = is_array(Tools::getValue('categories')) ? implode(',', Tools::getValue('categories')) : "";
+            
+            // dump($categories);
 
-            if (empty($name) || empty($text) || empty($color)) {
-                $this->errors[] = $this->trans('All fields are required.', [], 'Modules.PkCustomFlags.Admin');
+            if (empty($name)) {
+                $this->errors[] = $this->trans('Name is required.', [], 'Modules.PkCustomFlags.Admin');
                 return false;
             }
 
@@ -131,14 +146,13 @@ class AdminConfigurePkCustomFlagsController extends ModuleAdminController
             $flag->name = $name;
             $flag->text = $text;
             $flag->color = $color;
-
+            $flag->categories = $categories;
+           
             if ($flag->save()) {
                 $this->confirmations[] = $this->trans('The flag has been successfully saved.', [], 'Modules.PkCustomFlags.Admin');
             } else {
                 $this->errors[] = $this->trans('An error occurred while saving the flag.', [], 'Modules.PkCustomFlags.Admin');
             }
         }
-
-        parent::postProcess();
     }
 }

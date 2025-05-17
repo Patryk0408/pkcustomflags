@@ -29,16 +29,18 @@ $sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'pk_custom_flags` (
     `id_flag` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` varchar(255) NOT NULL,
     `text` varchar(255) NOT NULL, 
-    `color` varchar(7) NOT NULL
+    `color` varchar(7),
+    `categories` TEXT, 
+    `products` TEXT
 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 
-$sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'pk_custom_flag_conditions` (
-    `id_condition` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `id_flag` int(11) NOT NULL,
-    `condition_type` ENUM("category", "feature", "product") NOT NULL, 
-    `condition_value` INT NOT NULL,
-    FOREIGN KEY (`id_flag`) REFERENCES `' . _DB_PREFIX_ . 'pk_custom_flags`(`id_flag`) ON DELETE CASCADE
-) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+// $sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'pk_custom_flag_conditions` (
+//     `id_condition` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+//     `id_flag` int(11) NOT NULL,
+//     `categories` TEXT NOT NULL, 
+//     `products` TEXT NOT NULL,
+//     FOREIGN KEY (`id_flag`) REFERENCES `' . _DB_PREFIX_ . 'pk_custom_flags`(`id_flag`) ON DELETE CASCADE
+// ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 
 foreach ($sql as $query) {
     if (Db::getInstance()->execute($query) == false) {

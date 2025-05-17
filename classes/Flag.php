@@ -29,6 +29,7 @@ class Flag extends ObjectModel {
     public $name;
     public $text;
     public $color;
+    public $categories;
 
     public static $definition = [
         'table' => 'pk_custom_flags',
@@ -45,13 +46,18 @@ class Flag extends ObjectModel {
                 'type' => self::TYPE_STRING, 
                 'size' => 255, 
                 'validate' => 'isCleanHtml',
-                'required' => true
+                'required' => false
             ],
             'color' => [
                 'type' => self::TYPE_STRING, 
                 'size' => 7, 
+                'validate' => 'isString',
+                'required' => false
+            ],
+            'categories' => [
+                'type' => self::TYPE_STRING, 
                 'validate' => 'isCleanHtml',
-                'required' => true
+                'required' => false
             ],
         ]
     ];
